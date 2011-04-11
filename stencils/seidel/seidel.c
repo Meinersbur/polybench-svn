@@ -10,7 +10,7 @@
 # define TSTEPS 20
 #endif
 #ifndef N
-# define N 1000
+# define N 1024
 #endif
 
 /* Default data type is double. */
@@ -33,19 +33,19 @@ DATA_TYPE** A = (DATA_TYPE**)malloc(N * sizeof(DATA_TYPE*));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      A[i][j] = ((DATA_TYPE) (i-3)*j + 10) / N;
+      A[i][j] = ((DATA_TYPE) i*j + 10) / N;
 }
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;

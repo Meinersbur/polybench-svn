@@ -58,7 +58,8 @@ DATA_TYPE** E = (DATA_TYPE**)malloc(NI * sizeof(DATA_TYPE*));
 }
 #endif
 
-static inline
+
+inline
 void init_array()
 {
   int i, j;
@@ -86,7 +87,7 @@ void init_array()
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;
@@ -122,7 +123,7 @@ int main(int argc, char** argv)
 #pragma scop
 #pragma live-out E
 
-  /* E := A*B*D */
+  /* E := A*B*C */
   for (i = 0; i < ni; i++)
     for (j = 0; j < nj; j++)
       {

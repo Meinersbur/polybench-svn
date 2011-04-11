@@ -42,19 +42,19 @@ DATA_TYPE* mean = (DATA_TYPE*)malloc((M + 1) * sizeof(DATA_TYPE));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
 
   for (i = 0; i <= M; i++)
     for (j = 0; j <= N; j++)
-      data[i][j] = ((DATA_TYPE) i*j) / (M+1);
+      data[i][j] = ((DATA_TYPE) i*j) / M;
 }
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;

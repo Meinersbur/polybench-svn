@@ -67,7 +67,7 @@ DATA_TYPE** G = (DATA_TYPE**)malloc(NI * sizeof(DATA_TYPE*));
 #endif
 
 
-static inline
+inline
 void init_array()
 {
   int i, j;
@@ -97,7 +97,7 @@ void init_array()
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;
@@ -134,9 +134,37 @@ int main(int argc, char** argv)
 #pragma scop
 #pragma live-out G
 
+/*   /\* E := A*B *\/ */
+/*   for (i = 0; i < ni; i++) */
+/*     for (j = 0; j < nj; j++) */
+/*       { */
+/* 	E[i][j] = 0; */
+/* 	for (k = 0; k < nk; ++k) */
+/* 	  E[i][j] += A[i][k] * B[k][j]; */
+/*       } */
+
+/*   /\* F := C*D *\/ */
+/*   for (i = 0; i < nj; i++) */
+/*     for (j = 0; j < nl; j++) */
+/*       { */
+/* 	F[i][j] = 0; */
+/* 	for (k = 0; k < nm; ++k) */
+/* 	  F[i][j] += C[i][k] * D[k][j]; */
+/*       } */
+/*   /\* G := E*F *\/ */
+/*   for (i = 0; i < ni; i++) */
+/*     for (j = 0; j < nl; j++) */
+/*       { */
+/* 	G[i][j] = 0; */
+/* 	for (k = 0; k < nj; ++k) */
+/* 	  G[i][j] += E[i][k] * F[k][j]; */
+/*       } */
+  
+  /// FIXME: Remove some parameters, CLooG-ISL crashes...
+  
   /* E := A*B */
   for (i = 0; i < ni; i++)
-    for (j = 0; j < nj; j++)
+    for (j = 0; j < ni; j++)
       {
 	E[i][j] = 0;
 	for (k = 0; k < nk; ++k)
@@ -144,19 +172,19 @@ int main(int argc, char** argv)
       }
 
   /* F := C*D */
-  for (i = 0; i < nj; i++)
-    for (j = 0; j < nl; j++)
+  for (i = 0; i < ni; i++)
+    for (j = 0; j < ni; j++)
       {
 	F[i][j] = 0;
-	for (k = 0; k < nm; ++k)
+	for (k = 0; k < nk; ++k)
 	  F[i][j] += C[i][k] * D[k][j];
       }
   /* G := E*F */
   for (i = 0; i < ni; i++)
-    for (j = 0; j < nl; j++)
+    for (j = 0; j < ni; j++)
       {
 	G[i][j] = 0;
-	for (k = 0; k < nj; ++k)
+	for (k = 0; k < nk; ++k)
 	  G[i][j] += E[i][k] * F[k][j];
       }
 

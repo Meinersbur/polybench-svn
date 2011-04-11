@@ -1,26 +1,20 @@
 #!/bin/sh
 
-if [ $# -ne 2 ]; then
-    echo "Usage: runall.sh <benchmark-category> <machine-acronym>";
-    echo "ex:    runall.sh linear-algebra/kernels nehalem-gcc";
+if [ $# -ne 1 ]; then
+    echo "Usage: runall.sh <machine-acronym>";
     exit 1;
 fi;
 
 ## Default value for the compilation line.
 if [ -z "$COMPILER_COMMAND" ]; then
-    COMPILER_COMMAND="gcc-4.5 -O3 -fopenmp -lm";
+    COMPILER_COMMAND="gcc -O3 -fopenmp";
 fi;
 
-BENCHCAT="$1"
-MACHINE="$2"
-echo "Machine: $MACHINE";
-echo "Benchmark category: $BENCHCAT";
-rootdir=`pwd`;
-cd "$BENCHCAT" &&
+echo "Machine: $1";
 for i in `ls`; do
     if [ -d "$i" ] && [ -f "$i/$i.c" ]; then
 	echo "Testing benchmark $i";
-	rm -f $rootdir/data/$MACHINE-$i.dat
+	rm -f data/$1-$i.dat
 	if [ -f "$i/compiler.opts" ]; then
 	    read comp_opts < $i/compiler.opts;
 	    COMPILER_F_COMMAND="$COMPILER_COMMAND $comp_opts";
@@ -29,7 +23,7 @@ for i in `ls`; do
 	fi;
 	for j in `find $i -name "*.c"`; do
 	    echo "Testing $j";
-	    $rootdir/scripts/compile.sh "$rootdir" "$COMPILER_F_COMMAND" "$j" "transfo" > /dev/null;
+	    scripts/compile.sh "$COMPILER_F_COMMAND" "$j" "transfo" > /dev/null;
 	    if [ $? -ne 0 ]; then
 		echo "Problem when compiling $j";
 	    else
@@ -37,24 +31,10 @@ for i in `ls`; do
 		if [ $? -ne 0 ]; then
 		    echo "Problem when executing $j";
 		else
-		    cnt=0;
-		    res="";
-		    while [ $cnt -lt 5 ]; do
-			val=`./transfo`;
-			if [ $? -ne 0 ]; then
-			    echo "Problem when executing $j";
-			    res="-1";
-			else
-			    echo "execution time: $val";
-			    res="$res $val";
-			fi;
-			cnt=$(($cnt + 1));
-		    done;
-		    output=`echo "$res" | sed -e "s/s//g"`;
-		    echo "$j $output" >> $rootdir/data/$MACHINE-$i.dat
+		    echo "execution time: $val";
+		    echo "$j $val" >> data/$1-$i.dat
 		fi;
 	    fi;
 	done;
     fi;
 done;
-cd ..;

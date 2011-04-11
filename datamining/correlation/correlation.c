@@ -45,19 +45,19 @@ DATA_TYPE* mean = (DATA_TYPE*)malloc((M + 1) * sizeof(DATA_TYPE));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
 
   for (i = 0; i <= M; i++)
     for (j = 0; j <= N; j++)
-      data[i][j] = ((DATA_TYPE) i*j) / (M+1);
+      data[i][j] = ((DATA_TYPE) i*j) / M;
 }
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;
@@ -90,8 +90,6 @@ int main(int argc, char** argv)
 
 #define sqrt_of_array_cell(x,j) sqrt(x[j])
 
-#pragma scop
-#pragma live-out symmat
 
   /* Determine mean of column vectors of input data matrix */
   for (j = 1; j <= m; j++)
@@ -115,6 +113,8 @@ int main(int argc, char** argv)
 	 divide. */
       stddev[j] = stddev[j] <= eps ? 1.0 : stddev[j];
     }
+#pragma scop
+#pragma live-out symmat
 
  /* Center and reduce the column vectors. */
   for (i = 1; i <= n; i++)
@@ -136,9 +136,9 @@ int main(int argc, char** argv)
 	  symmat[j2][j1] = symmat[j1][j2];
 	}
     }
+#pragma endscop
  symmat[m][m] = 1.0;
 
-#pragma endscop
 
   /* Stop and print timer. */
   polybench_stop_instruments;

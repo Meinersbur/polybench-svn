@@ -1,5 +1,5 @@
 * * * * * * * * * *
-*  PolyBench 2.0  *
+* PolyBenchs 1.0  *
 * * * * * * * * * *
 
 
@@ -7,25 +7,16 @@
 
 ::linear-algebra::
 linear-algebra/kernels:
-linear-algebra/kernels/2mm/2mm.c
-linear-algebra/kernels/3mm/3mm.c
+linear-algebra/kernels/atax/2mm.c
+linear-algebra/kernels/atax/3mm.c
 linear-algebra/kernels/atax/atax.c
 linear-algebra/kernels/bicg/bicg.c
-linear-algebra/kernels/cholesky/cholesky.c
 linear-algebra/kernels/doitgen/doitgen.c
 linear-algebra/kernels/gemm/gemm.c
 linear-algebra/kernels/gemver/gemver.c
 linear-algebra/kernels/gesummv/gesummv.c
-linear-algebra/kernels/mvt/mvt.c
-linear-algebra/kernels/symm/symm.c
-linear-algebra/kernels/syr2k/syr2k.c
-linear-algebra/kernels/syrk/syrk.c
-linear-algebra/kernels/trisolv/trisolv.c
-linear-algebra/kernels/trmm/trmm.c
 
 linear-algebra/solvers:
-linear-algebra/solvers/durbin/durbin.c
-linear-algebra/solvers/dynprog/dynprog.c
 linear-algebra/solvers/gramschmidt/gramschmidt.c
 linear-algebra/solvers/lu/lu.c
 linear-algebra/solvers/ludcmp/ludcmp.c
@@ -34,15 +25,8 @@ linear-algebra/solvers/ludcmp/ludcmp.c
 datamining/correlation/correlation.c
 datamining/covariance/covariance.c
 
-::image-processing::
-image-processing/gauss-filter/gauss-filter.c
-image-processing/reg_detect/reg_detect.c
-
 ::stencils::
 stencils/adi/adi.c
-stencils/fdtd-2d/fdtd-2d.c
-stencils/fdtd-apml/fdtd-apml.c
-stencils/jacobi-1d-imper/jacobi-1d-imper.c
 stencils/jacobi-2d-imper/jacobi-2d-imper.c
 stencils/seidel/seidel.c
 
@@ -72,26 +56,14 @@ current list is:
 - POLYBENCH_TEST_MALLOC: use malloc instead of stack allocation [default: off]
 - POLYBENCH_DUMP_ARRAYS: dump all live-out arrays on stderr [default: off]
 
-- POLYBENCH_PAPI: use PAPI to get hardware counters as specified in
-  utilities/papi_counters.list
-
 - Nxx: override the default dataset values
 
 
 * Collecting the execution time of all files
 
-$> scripts/runall.sh <benchmark-category> <machine-name>
+$> scripts/runall.sh <machine-name>
 
-Note: the script runall must be run from the root directory of the
-archive. The benchmark category is one of the following:
- - linear-algebra/kernels
- - linear-algebra/solvers
- - datamining
- - image-processing
- - stencils
-
-Example:
-$> scripts/runall.sh linear-algebra/kernels nehalem-gcc
+Note: the script runall must be run from the root directory of the archive.
 
 
 ** Specifying different dataset size for one file in particular

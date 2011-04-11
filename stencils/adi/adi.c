@@ -41,7 +41,7 @@ DATA_TYPE** B = (DATA_TYPE**)malloc(MAXGRID * sizeof(DATA_TYPE*));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
@@ -49,15 +49,15 @@ void init_array()
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
       {
-	X[i][j] = ((DATA_TYPE) i*(j+1) + 1) / N;
-	A[i][j] = ((DATA_TYPE) (i-1)*(j+4) + 2) / N;
-	B[i][j] = ((DATA_TYPE) (i+3)*(j+7) + 3) / N;
+	X[i][j] = ((DATA_TYPE) i*j + 1) / N;
+	A[i][j] = ((DATA_TYPE) i*j + 2) / N;
+	B[i][j] = ((DATA_TYPE) i*j + 3) / N;
       }
 }
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;

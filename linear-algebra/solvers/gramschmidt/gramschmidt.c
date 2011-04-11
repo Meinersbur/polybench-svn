@@ -43,19 +43,19 @@ DATA_TYPE** Q = (DATA_TYPE**)malloc(M * sizeof(DATA_TYPE*));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
 
   for (i = 0; i < M; i++)
     for (j = 0; j < N; j++)
-      A[i][j] = ((DATA_TYPE) (i+1)*(j+1)) / M;
+      A[i][j] = ((DATA_TYPE) i*j) / M;
 }
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;

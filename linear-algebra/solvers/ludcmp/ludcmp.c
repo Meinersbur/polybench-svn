@@ -38,7 +38,7 @@ DATA_TYPE* b = (DATA_TYPE*)malloc((N + 1) * sizeof(DATA_TYPE));
 }
 #endif
 
-static inline
+inline
 void init_array()
 {
   int i, j;
@@ -54,7 +54,7 @@ void init_array()
 
 /* Define the live-out variables. Code is not executed unless
    POLYBENCH_DUMP_ARRAYS is defined. */
-static inline
+inline
 void print_array(int argc, char** argv)
 {
   int i, j;
@@ -116,8 +116,8 @@ int main(int argc, char** argv)
     {
       w = y[n - 1 - (i)];
       for (j = n - i; j <= n; j++)
-	w = w - a[n - 1 - (i)][j] * x[j];
-      x[n - 1 - (i)] = w / a[n - 1 - (i)][n - 1-(i)];
+	w = w - a[n - 1 - i][j] * x[j];
+      x[n - 1 - i] = w / a[n - 1 - (i)][n - 1-(i)];
     }
 
 #pragma endscop
