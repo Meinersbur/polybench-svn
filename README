@@ -1,45 +1,18 @@
-* * * * * * * * * *
-* PolyBench/C 3.2 *
-* * * * * * * * * *
+* * * * * * * * * * * * *
+* PolyBench/Fortran 1.0 *
+* * * * * * * * * * * * *
 
 Copyright (c) 2011-2012 the Ohio State University.
 Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
+         Mohanish Narayan <narayanm@cse.ohio-state.edu>
 
 
 -------------
-* New in 3.2:
+* New in 1.0:
 -------------
 
-- Rename the package to PolyBench/C, to prepare for the upcoming
-  PolyBench/Fortran and PolyBench/GPU.
-- Fixed a typo in polybench.h, causing compilation problems for 5D arrays.
-- Fixed minor typos in correlation, atax, cholesky, fdtd-2d.
-- Added an option to build the test suite with constant loop bounds
-  (default is parametric loop bounds)
-
-
--------------
-* New in 3.1:
--------------
-
-- Fixed a typo in polybench.h, causing compilation problems for 3D arrays.
-- Set by default heap arrays, stack arrays are now optional.
-
-
--------------
-* New in 3.0:
--------------
-
-- Multiple dataset sizes are predefined. Each file comes now with a .h
-  header file defining the dataset.
-- Support of heap-allocated arrays. It uses a single malloc for the
-  entire array region, the data allocated is cast into a C99
-  multidimensional array.
-- One benchmark is out: gauss_filter
-- One benchmark is in: floyd-warshall
-- PAPI support has been greatly improved; it also can report the
-  counters on a specific core to be set by the user.
-
+- First release of Polybench/Fortran, based on 
+  Polybench/C 3.2
 
 
 ----------------
@@ -64,44 +37,44 @@ General discussions reg. PolyBench.
 
 ::linear-algebra::
 linear-algebra/kernels:
-linear-algebra/kernels/2mm/2mm.c
-linear-algebra/kernels/3mm/3mm.c
-linear-algebra/kernels/atax/atax.c
-linear-algebra/kernels/bicg/bicg.c
-linear-algebra/kernels/cholesky/cholesky.c
-linear-algebra/kernels/doitgen/doitgen.c
-linear-algebra/kernels/gemm/gemm.c
-linear-algebra/kernels/gemver/gemver.c
-linear-algebra/kernels/gesummv/gesummv.c
-linear-algebra/kernels/mvt/mvt.c
-linear-algebra/kernels/symm/symm.c
-linear-algebra/kernels/syr2k/syr2k.c
-linear-algebra/kernels/syrk/syrk.c
-linear-algebra/kernels/trisolv/trisolv.c
-linear-algebra/kernels/trmm/trmm.c
+linear-algebra/kernels/2mm/2mm.F90
+linear-algebra/kernels/3mm/3mm.F90
+linear-algebra/kernels/atax/atax.F90
+linear-algebra/kernels/bicg/bicg.F90
+linear-algebra/kernels/cholesky/cholesky.F90
+linear-algebra/kernels/doitgen/doitgen.F90
+linear-algebra/kernels/gemm/gemm.F90
+linear-algebra/kernels/gemver/gemver.F90
+linear-algebra/kernels/gesummv/gesummv.F90
+linear-algebra/kernels/mvt/mvt.F90
+linear-algebra/kernels/symm/symm.F90
+linear-algebra/kernels/syr2k/syr2k.F90
+linear-algebra/kernels/syrk/syrk.F90
+linear-algebra/kernels/trisolv/trisolv.F90
+linear-algebra/kernels/trmm/trmm.F90
 
 linear-algebra/solvers:
-linear-algebra/solvers/durbin/durbin.c
-linear-algebra/solvers/dynprog/dynprog.c
-linear-algebra/solvers/gramschmidt/gramschmidt.c
-linear-algebra/solvers/lu/lu.c
-linear-algebra/solvers/ludcmp/ludcmp.c
+linear-algebra/solvers/durbin/durbin.F90
+linear-algebra/solvers/dynprog/dynprog.F90
+linear-algebra/solvers/gramschmidt/gramschmidt.F90
+linear-algebra/solvers/lu/lu.F90
+linear-algebra/solvers/ludcmp/ludcmp.F90
 
 ::datamining::
-datamining/correlation/correlation.c
-datamining/covariance/covariance.c
+datamining/correlation/correlation.F90
+datamining/covariance/covariance.F90
 
 ::medley::
-medley/floyd-warshall/floyd-warshall.c
-medley/reg_detect/reg_detect.c
+medley/floyd-warshall/floyd-warshall.F90
+medley/reg_detect/reg_detect.F90
 
 ::stencils::
-stencils/adi/adi.c
-stencils/fdtd-2d/fdtd-2d.c
-stencils/fdtd-apml/fdtd-apml.c
-stencils/jacobi-1d-imper/jacobi-1d-imper.c
-stencils/jacobi-2d-imper/jacobi-2d-imper.c
-stencils/seidel-2d/seidel-2d.c
+stencils/adi/adi.F90
+stencils/fdtd-2d/fdtd-2d.F90
+stencils/fdtd-apml/fdtd-apml.F90
+stencils/jacobi-1d-imper/jacobi-1d-imper.F90
+stencils/jacobi-2d-imper/jacobi-2d-imper.F90
+stencils/seidel-2d/seidel-2d.F90
 
 
 
@@ -113,19 +86,31 @@ stencils/seidel-2d/seidel-2d.c
 ** To compile a benchmark without any monitoring:
 -------------------------------------------------
 
-$> gcc -I utilities -I linear-algebra/kernels/atax utilities/polybench.c linear-algebra/kernels/atax/atax.c -o atax_base
+#  Build utilities first 
+$> gcc -c utilities/fpolybench.c -o utilities/fpolybench.o
+
+#  Build the benchmark
+$> gfortran -ffree-line-length-none linear-algebra/kernels/atax/atax.F90 -Iutilities utilities/fpolybench.o -o atax_base
 
 
 ** To compile a benchmark with execution time reporting:
 --------------------------------------------------------
 
-$> gcc -O3 -I utilities -I linear-algebra/kernels/atax utilities/polybench.c linear-algebra/kernels/atax/atax.c -DPOLYBENCH_TIME -o atax_time
+#  Build utilities first 
+$> gcc -c -DPOLYBENCH_TIME utilities/fpolybench.c -o utilities/fpolybench.o
+
+#  Build the benchmark
+$> gfortran -ffree-line-length-none -DPOLYBENCH_TIME linear-algebra/kernels/atax/atax.F90 -Iutilities utilities/fpolybench.o -o atax_time
 
 
 ** To generate the reference output of a benchmark:
 ---------------------------------------------------
 
-$> gcc -O0 -I utilities -I linear-algebra/kernels/atax utilities/polybench.c linear-algebra/kernels/atax/atax.c -DPOLYBENCH_DUMP_ARRAYS -o atax_ref
+#  Build utilities first 
+$> gcc -c utilities/fpolybench.c -o utilities/fpolybench.o
+
+#  Build the benchmark
+$> gfortran -ffree-line-length-none -O0 -DPOLYBENCH_DUMP_ARRAYS linear-algebra/kernels/atax/atax.F90 -Iutilities utilities/fpolybench.o -o atax_ref
 $> ./atax_ref 2>atax_ref.out
 
 
@@ -162,8 +147,6 @@ They are all passed as macro definitions during compilation time (e.g,
   EXTRALARGE_DATASET: set the dataset size to be used
   [default: STANDARD_DATASET]
 
-- POLYBENCH_USE_C99_PROTO: Use standard C99 prototype for the functions.
-
 - POLYBENCH_USE_SCALAR_LB: Use scalar loop bounds instead of parametric ones.
 
 
@@ -175,7 +158,11 @@ They are all passed as macro definitions during compilation time (e.g,
 ** To compile a benchmark with PAPI support:
 --------------------------------------------
 
-$> gcc -O3 -I utilities -I linear-algebra/kernels/atax utilities/polybench.c linear-algebra/kernels/atax/atax.c -DPOLYBENCH_PAPI -lpapi -o atax_papi
+#  Build utilities first 
+$> gcc -c utilities/fpolybench.c -o utilities/fpolybench.o -DPOLYBENCH_PAPI
+
+#  Build the benchmark
+$> gfortran -ffree-line-length-none -O3 -DPOLYBENCH_PAPI linear-algebra/kernels/atax/atax.F90 -Iutilities utilities/fpolybench.o -o atax_papi
 
 
 ** To specify which counter(s) to monitor:
@@ -199,13 +186,19 @@ of milliseconds, it is critical to validate any performance number by
 repeating several times the experiment. A companion script is
 available to perform reasonable performance measurement of a PolyBench.
 
-$> gcc -O3 -I utilities -I linear-algebra/kernels/atax utilities/polybench.c linear-algebra/kernels/atax/atax.c -DPOLYBENCH_TIME -o atax_time
+#  Build utilities first 
+$> gcc -c -O3 utilities/fpolybench.c -o utilities/fpolybench.o -DPOLYBENCH_TIME
+
+#  Build the benchmark
+$> gfortran -ffree-line-length-none -O3 -DPOLYBENCH_TIME linear-algebra/kernels/atax/atax.F90 -Iutilities utilities/fpolybench.o -o atax_time
+
+#  Run the benchmark using the companion script.
 $> ./utilities/time_benchmark.sh ./atax_time
 
 This script will run five times the benchmark (that must be a
 PolyBench compiled with -DPOLYBENCH_TIME), eliminate the two extremal
 times, and check that the deviation of the three remaining does not
-exceed a given threshold, set to 5%.
+exceed a given thresold, set to 5%.
 
 It is also possible to use POLYBENCH_CYCLE_ACCURATE_TIMER to use the
 Time Stamp Counter instead of gettimeofday() to monitor the number of
@@ -220,14 +213,14 @@ elapsed cycles.
 
 (from the root of the archive:)
 $> PARGS="-I utilities -DPOLYBENCH_TIME";
-$> for i in `cat utilities/benchmark_list`; do create_cpped_version.sh $i "$PARGS"; done
+$> for i in `cat utilities/benchmark_list`; do create_pped_version.sh $i "$PARGS"; done
 
-This create for each benchmark file 'xxx.c' a new file
-'xxx.preproc.c'. The PARGS variable in the above example can be set to
-the desired configuration, for instance to create a full C99 version
-(parametric arrays):
+This create for each benchmark file 'xxx.F' a new file
+'xxx.preproc.F'. The PARGS variable in the above example can be set to
+the desired configuration.
 
-$> PARGS="-I utilities -DPOLYBENCH_USE_C99_PROTO";
-$> for i in `cat utilities/benchmark_list`; do ./utilities/create_cpped_version.sh "$i" "$PARGS"; done
+e.g
+$> PARGS="-I utilities -DPOLYBENCH_STACK_ARRAYS -DPOLYBENCH_USE_SCALAR_LB -DLARGE_DATASET -DPOLYBENCH_TIME";
+$> for i in `cat utilities/benchmark_list`; do ./utilities/create_pped_version.sh "$i" "$PARGS"; done
 
 

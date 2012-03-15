@@ -8,7 +8,10 @@
   the PolyBench infrastructure and machinery, and several
   reference C files.
 
-* Uday Bondugula <uday@csa.iisc.ernet.in>
+* Mohanish Narayan <narayanm@cse.ohio-state.edu>
+  Who translated Polybench/C 3.2 to Polybench/Fortran.
+
+* Uday Bondugula <Uday Bondhugula <ubondhug@us.ibm.com>
   Who provided many of the original reference C files, including
   Fortran to C translation.
 

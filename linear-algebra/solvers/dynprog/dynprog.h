@@ -1,6 +1,5 @@
 /**
- * dynprog.h: This file is part of the PolyBench/C 3.2 test suite.
- *
+ * dynprog.h: This file is part of the PolyBench 1.0/Fortran test suite.
  *
  * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
@@ -46,8 +45,8 @@
 # define _PB_LENGTH POLYBENCH_LOOP_BOUND(LENGTH,length)
 
 # ifndef DATA_TYPE
-#  define DATA_TYPE int
-#  define DATA_PRINTF_MODIFIER "%d "
+#  define DATA_TYPE integer
+#  define DATA_PRINTF_MODIFIER "(i0,1x)", advance='no'
 # endif
 
 

@@ -1,6 +1,5 @@
 /**
- * 2mm.h: This file is part of the PolyBench/C 3.2 test suite.
- *
+ * 2mm.h: This file is part of the PolyBench/Fortran 1.0 test suite.
  *
  * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
@@ -58,8 +57,8 @@
 # define _PB_NL POLYBENCH_LOOP_BOUND(NL,nl)
 
 # ifndef DATA_TYPE
-#  define DATA_TYPE double
-#  define DATA_PRINTF_MODIFIER "%0.2lf "
+#  define DATA_TYPE double precision
+#  define DATA_PRINTF_MODIFIER "(f0.2,1x)", advance='no'
 # endif
 
 

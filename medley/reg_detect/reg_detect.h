@@ -1,6 +1,5 @@
 /**
- * reg_detect.h: This file is part of the PolyBench/C 3.2 test suite.
- *
+ * reg_detect.h: This file is part of the PolyBench/Fortran 1.0 test suite.
  *
  * Contact: Louis-Noel Pouchet <pouchet@cse.ohio-state.edu>
  * Web address: http://polybench.sourceforge.net
@@ -52,8 +51,8 @@
 # define _PB_MAXGRID POLYBENCH_LOOP_BOUND(MAXGRID,maxgrid)
 
 # ifndef DATA_TYPE
-#  define DATA_TYPE int
-#  define DATA_PRINTF_MODIFIER "%d "
+#  define DATA_TYPE integer
+#  define DATA_PRINTF_MODIFIER "(i0,1x)", advance='no'
 # endif
 
 
